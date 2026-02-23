@@ -1,24 +1,36 @@
 version: "3.9"
 services:
-  ollama:
-    build: ./docker/ollama
-    container_name: ollama
+  # Core JAI Home service (same as before)
+  jai_home:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    container_name: jai_home
     restart: unless-stopped
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama-models:/root/.ollama
-
-  vllm:
-    build: ./docker/vllm
-    container_name: vllm
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
+    devices:
+      - /dev/snd:/dev/snd
     environment:
-      - MODEL=${VLLM_MODEL:-meta-llama/Meta-Llama-3-8B-Instruct}
-    command: ["python", "-m", "vllm.entrypoints.openai.api_server", "--model", "$MODEL", "--port", "8000"]
-    shm_size: "2gb"
+      - TZ=Europe/Vienna
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/config
 
-volumes:
-  ollama-models:
+  # Optional Home Assistant API service – enabled via the "ha" profile
+  ha_api:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+      args:
+        ENABLE_HA: "1"
+    container_name: jai_home_ha_api
+    restart: unless-stopped
+    environment:
+      - ENABLE_HA=1
+      - TZ=Europe/Vienna
+    ports:
+      - "8123:8123"
+    profiles:
+      - ha   # start with: docker compose --profile ha up
+
+# To run only the core service:    docker compose up -d
+# To run core + HA API service:   docker compose --profile ha up -d

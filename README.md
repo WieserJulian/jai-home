@@ -52,6 +52,25 @@ docker compose up -d   # starts Ollama, vLLM and the voice‑loop container
 
 ---
 
+## Optional Home Assistant API integration
+
+The Docker image can be built with the **Home Assistant API** feature enabled. This ships a tiny HTTP endpoint (`/status`) that Home Assistant can poll.
+
+*Enable it via Docker Compose profile:*  
+```bash
+docker compose --profile ha up -d
+```
+
+When the `ha` profile is active:
+
+- The container is built with `ENABLE_HA=1`.
+- Port **8123** is exposed; `http://<host>:8123/status` returns JSON with the service status.
+- You can use the endpoint in Home Assistant automations or as a health‑check sensor.
+
+If you do **not** need this feature, simply run the normal compose (`docker compose up -d`).
+
+---
+
 ## Quick‑Start (after installation)
 
 1. **Prerequisites** – Docker, Python 3.11+, microphone & speaker.
@@ -91,9 +110,8 @@ docker compose up -d   # starts Ollama, vLLM and the voice‑loop container
   ruff check src
   mypy src
   ```
-- CI pipeline (GitHub Actions) is defined in `.github/workflows/ci.yml`.
+- CI pipeline (GitHub Actions) runs these checks on each push.
 
 ---
 
 The repository contains a complete, ready‑to‑run setup. Choose the installation method that fits your environment and enjoy a local, privacy‑first voice assistant.
-
