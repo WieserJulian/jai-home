@@ -1,0 +1,14 @@
+[Unit]
+Description=JAI Voice Assistant – always‑on LLM + mic + speaker
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/wiju/projects/jaihome
+ExecStart=/home/wiju/projects/jaihome/run_forever.sh
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
