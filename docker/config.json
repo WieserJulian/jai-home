@@ -1,0 +1,14 @@
+{
+  "name": "JAI Home Voice Assistant",
+  "slug": "jai_home",
+  "description": "Always‑on voice assistant that runs locally using Ollama/vLLM, Whisper and Coqui TTS.",
+  "version": "1.0.0",
+  "arch": ["amd64", "aarch64"],
+  "startup": "services",
+  "boot": "auto",
+  "host_network": false,
+  "hassio_api": true,
+  "devices": ["/dev/snd:/dev/snd"],
+  "options": {},
+  "schema": {}
+}

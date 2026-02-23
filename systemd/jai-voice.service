@@ -6,7 +6,10 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=/home/wiju/projects/jaihome
-ExecStart=/home/wiju/projects/jaihome/run_forever.sh
+# Start the Docker compose stack (foreground)
+ExecStart=/usr/bin/docker compose -f docker/compose.yml up
+# Stop the stack on service stop
+ExecStop=/usr/bin/docker compose -f docker/compose.yml down
 Restart=on-failure
 RestartSec=10
 

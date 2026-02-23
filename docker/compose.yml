@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  jai-home:
+    build: .
+    container_name: jai_home
+    restart: unless-stopped
+    devices:
+      - /dev/snd:/dev/snd      # expose audio hardware
+    environment:
+      - TZ=Europe/Vienna
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/config
