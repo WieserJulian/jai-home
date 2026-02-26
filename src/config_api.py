@@ -5,6 +5,7 @@ POST /config   -> accepts JSON with optional keys 'backend' and 'model', writes 
 """
 
 from fastapi import FastAPI, HTTPException, Body
+import yaml
 from pathlib import Path
 
 from fastapi.staticfiles import StaticFiles
