@@ -4,11 +4,14 @@ GET  /config   -> returns current config as JSON
 POST /config   -> accepts JSON with optional keys 'backend' and 'model', writes config.yaml
 """
 
-from fastapi import FastAPI, HTTPException, Body
-import yaml
+from fastapi import FastAPI, HTTPException, Body  # type: ignore
+
+import yaml  # type: ignore
+
 from pathlib import Path
 
-from fastapi.staticfiles import StaticFiles
+from fastapi.staticfiles import StaticFiles  # type: ignore
+
 
 
 from .skill_manager import SkillManager

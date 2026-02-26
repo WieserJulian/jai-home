@@ -16,7 +16,8 @@ override the YAML values, making it easy to switch backends at runtime.
 """
 
 import os
-import yaml
+import yaml  # type: ignore
+
 from pathlib import Path
 
 DEFAULT_CONFIG = {

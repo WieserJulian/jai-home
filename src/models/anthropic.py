@@ -29,7 +29,8 @@ class AnthropicClient(BaseLLM):
             "messages": [{"role": "user", "content": prompt}],
         }
         async with httpx.AsyncClient(timeout=30.0) as client:
-            resp = await client.post(self.base, json=payload, headers=headers)
+            resp = await client.post(self.base, json=payload, headers=headers)  # type: ignore
+
             resp.raise_for_status()
             data = resp.json()
             return data["content"][0]["text"]

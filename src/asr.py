@@ -11,11 +11,14 @@ import os
 import queue
 import threading
 
+
+
 # Optional heavy dependencies – import lazily and handle failures.
 try:
-    import numpy as np  # noqa: F401 (used by the real implementation)
-    import sounddevice as sd  # noqa: F401
-    from whisper_cpp import Whisper  # noqa: F401
+    import numpy as np  # type: ignore  # noqa: F401 (used by the real implementation)
+    import sounddevice as sd  # type: ignore  # noqa: F401
+    from whisper_cpp import Whisper  # type: ignore  # noqa: F401
+
     _HAS_WHISPER = True
 except Exception:  # pragma: no cover – fallback path
     _HAS_WHISPER = False
@@ -32,9 +35,10 @@ if _HAS_WHISPER:
 else:
     # Stub placeholders – they will never be used.
     whisper = None
-    q = None
+    q: Optional[queue.Queue] = None
     def _audio_callback(*args, **kwargs):
         pass
+
 
 def listen(stop_event: threading.Event, sample_rate: int = 16000) -> str:
     """Record from the default microphone until a phrase is detected.
