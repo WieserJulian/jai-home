@@ -5,9 +5,15 @@ POST /config   -> accepts JSON with optional keys 'backend' and 'model', writes 
 """
 
 from fastapi import FastAPI, HTTPException, Body
-from fastapi.staticfiles import StaticFiles
 from pathlib import Path
-import yaml
+
+from fastapi.staticfiles import StaticFiles
+
+
+from .skill_manager import SkillManager
+
+skill_manager = SkillManager()
+
 
 app = FastAPI(title="JAI Home Config API")
 app.mount("/", StaticFiles(directory=Path(__file__).resolve().parent / "static", html=True))
@@ -45,10 +51,7 @@ def update_config(payload: dict):
     write_config(payload)
     return {"status": "ok", "config": load_current()}
 
-# ==== Home Assistant webhook endpoint ====
-from .skill_manager import SkillManager
 
-skill_manager = SkillManager()
 
 @app.post("/ha/command")
 def ha_command(payload: dict = Body(...)):
