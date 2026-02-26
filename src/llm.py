@@ -6,7 +6,6 @@ still caches the concrete backend client for efficiency, but will recreate it
 if the backend or model settings have changed since the last call.
 """
 
-import os
 import importlib
 from .config import load_config
 from .context import add_entry

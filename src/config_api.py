@@ -4,13 +4,12 @@ GET  /config   -> returns current config as JSON
 POST /config   -> accepts JSON with optional keys 'backend' and 'model', writes config.yaml
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Body
+from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import yaml
-import os
 
 app = FastAPI(title="JAI Home Config API")
-from fastapi.staticfiles import StaticFiles
 app.mount("/", StaticFiles(directory=Path(__file__).resolve().parent / "static", html=True))
 
 # Determine the repository root (two levels up from this file)
@@ -47,7 +46,6 @@ def update_config(payload: dict):
     return {"status": "ok", "config": load_current()}
 
 # ==== Home Assistant webhook endpoint ====
-from fastapi import Body
 from .skill_manager import SkillManager
 
 skill_manager = SkillManager()
