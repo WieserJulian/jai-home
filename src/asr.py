@@ -10,6 +10,7 @@ without requiring heavy dependencies.
 import os
 import queue
 import threading
+from typing import Optional
 
 
 
