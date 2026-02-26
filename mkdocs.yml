@@ -1,0 +1,27 @@
+site_name: JAI Home Voice Assistant
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Configuration UI: config_ui.md
+  - ASR & TTS: asr_tts.md
+  - Skills: skills.md
+  - Developer Guide: developer.md
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: pink
+markdown_extensions:
+  - admonition
+  - footnotes
+  - codehilite
+  - toc:
+      permalink: true
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - "import sys; sys.path.append('src')"
