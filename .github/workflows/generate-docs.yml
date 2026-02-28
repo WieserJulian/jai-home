@@ -1,0 +1,52 @@
+# ---------------------------------
+# Workflow: Generate Documentation (Jekyll)
+# ---------------------------------
+name: Generate Docs
+
+# Run on every push or PR (you can narrow the branches if you prefer)
+on:
+  push:
+    branches: [ "*" ]          # any branch
+  pull_request:
+    branches: [ "*" ]
+
+# Permissions needed for the Pages tools (read‑only is fine for building)
+permissions:
+  contents: read
+  pages: read
+
+concurrency:
+  group: "docs-build"
+  cancel-in-progress: true   # cancel previous runs when a new commit arrives
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1️⃣ Checkout the repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Prepare the Pages environment (required by the Jekyll action)
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 3️⃣ Build the site with Jekyll
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./                # your docs live at the repo root
+          destination: ./_site       # Jekyll output folder
+
+      # 4️⃣ Upload the built site as an artifact (downloadable from the Action)
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation
+          path: ./_site
+
+      # ------ OPTIONAL – Deploy only when we are on the default branch ------
+      - name: Deploy to GitHub Pages (only on master)
+        if: github.ref == 'refs/heads/master'
+        id: deployment
+        uses: actions/deploy-pages@v4
