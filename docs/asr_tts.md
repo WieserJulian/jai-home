@@ -15,11 +15,58 @@ When the library is present, audio is captured with `sounddevice` and passed to 
 
 ## TTS (Text‑to‑Speech)
 
-`src.tts` uses the Coqui TTS CLI (`tts`). If the binary is missing, it simply prints `[TTS] <text>`.
+`src.tts` provides a `speak(text: str)` function that renders *text* using **Coqui TTS**. The implementation follows a safe‑fallback strategy:
+
+1. **Binary check** – If the `tts` CLI binary is not found, the function simply prints `[TTS] <text>`.
+2. **Python‑API path** – When the optional `TTS` Python package is installed, the model is loaded lazily, cached, and audio is written to a temporary WAV file.
+3. **CLI fallback** – If the Python package is unavailable, the CLI is invoked.
+4. **Input validation** – Text is validated before synthesis to mitigate injection or resource‑exhaustion attacks (non‑printable characters are rejected and the length is limited to 500 characters by default – configurable via `TTS_MAX_LENGTH`).
 
 ```python
 if not shutil.which('tts'):
     print(f"[TTS] {text}")
+    return
+
+# Validate input
+try:
+    safe_text = _validate_text(text)
+except ValueError as e:
+    print(f"[TTS] Validation error: {e}")
+    return
 ```
 
-Both modules are designed to fail gracefully, enabling development on machines without the heavy dependencies.
+### Installation
+
+#### Python package (recommended)
+```bash
+pip install "TTS"          # Installs the Coqui TTS library and its dependencies
+```
+*The library will download the required model on first use. Set the model via the `TTS_MODEL` environment variable, e.g.:
+```bash
+export TTS_MODEL="tts_models/en/ljspeech/tacotron2-DDC"
+```
+
+#### CLI fallback (optional)
+If you prefer the original CLI approach, install the binary:
+```bash
+# On Ubuntu/Debian
+sudo apt-get install tts
+```
+Or build from source following the Coqui TTS repository instructions.
+
+### Usage example
+```python
+from src.tts import speak
+
+speak("Hello, welcome to JAI Home!")
+```
+
+### Security considerations
+- **Input sanitisation** – `_validate_text` ensures the text contains only printable characters and does not exceed the configured length (default 500 chars).
+- **Subprocess safety** – The only external command executed is the `tts` binary (or `aplay` for playback). Arguments are never constructed from user‑provided data.
+- **Dependency handling** – The Python library is optional; the system continues to work with a simple print fallback if dependencies are missing.
+
+### Troubleshooting
+- If you see `[TTS]` messages only, verify that the `tts` binary is on your `PATH` or that the `TTS` Python package is installed.
+- Ensure the `TTS_MODEL` environment variable points to a valid model name.
+- Check that `aplay` is installed for audio playback on Linux systems.

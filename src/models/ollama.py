@@ -6,7 +6,7 @@ in the unified model layer.
 """
 
 import os
-import httpx
+import httpx  # type: ignore
 from . import BaseLLM
 
 class OllamaLLM(BaseLLM):

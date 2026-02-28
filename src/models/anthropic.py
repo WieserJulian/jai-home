@@ -6,7 +6,7 @@ style similar to OpenAI.
 """
 
 import os
-import httpx
+import httpx  # type: ignore
 from . import BaseLLM
 
 class AnthropicClient(BaseLLM):

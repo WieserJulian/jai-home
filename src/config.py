@@ -33,12 +33,12 @@ def load_config() -> dict:
     2. ``config.yaml`` in the repository root.
     3. Built‑in defaults.
     """
-    config_path = os.getenv("JAI_CONFIG")
-    if not config_path:
+    config_path_env = os.getenv("JAI_CONFIG")
+    if config_path_env:
+        config_path = Path(config_path_env)
+    else:
         # repository root is two levels up from this file (src/ -> project root)
         config_path = Path(__file__).resolve().parents[2] / "config.yaml"
-    else:
-        config_path = Path(config_path)
 
     if config_path.is_file():
         with open(config_path, "r", encoding="utf-8") as f:

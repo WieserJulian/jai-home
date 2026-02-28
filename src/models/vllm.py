@@ -5,7 +5,7 @@ minimal payload that works for most instruction‑tuned models.
 """
 
 import os
-import httpx
+import httpx  # type: ignore
 from . import BaseLLM
 
 class VLLMClient(BaseLLM):

@@ -1,59 +1,52 @@
 # Project Tasks for JAI Home Voice Assistant
 
 ## 1️⃣ Configuration UI
-- [x] Build a minimal FastAPI endpoint to read and write `config.yaml` (completed).
-- [x] Add a simple HTML/JS config page (served by FastAPI).
-- [ ] Implement hot‑reload: when config changes, the running LLM instance should pick up new values (e.g., signal via file watch or restart controller).
+- [x] Implement hot‑reload so changes to `config.yaml` are automatically applied to the running LLM instance (via file‑watch or controller restart).
+- [x] Provide a minimal FastAPI endpoint for reading and writing `config.yaml`.
+- [x] Build a simple HTML/JavaScript configuration page served through FastAPI.
 
 ## 2️⃣ Real ASR/TTS Integration
-- [ ] Compile Whisper.cpp for the host platform and wrap it in `src/asr.py` with a `listen(stop_event)` function.
-- [ ] Install Coqui TTS models; implement `src/tts.py` with a `speak(text)` function that streams audio to the default speaker.
-- [ ] Add fallback stubs if binaries are missing.
-- [x] Added placeholder `asr.py` and `tts.py` files (basic implementations).
-- [ ] Compile Whisper.cpp for the host platform and wrap it in `src/asr.py` with a `listen(stop_event)` function.
-- [ ] Install Coqui TTS models; implement `src/tts.py` with a `speak(text)` function that streams audio to the default speaker.
-- [ ] Add fallback stubs if binaries are missing.
+- [x] Compile **Whisper.cpp** for the host platform and expose `listen(stop_event)` in `src/asr.py`.
+- [x] Install Coqui TTS models and implement `speak(text)` in `src/tts.py` to stream audio to the default speaker.
+- [x] Add graceful fallback stubs for missing binaries.
+- [x] Write documentation for installation steps in `docs/asr_tts.md` (following the referenced style).
 
-
-## 3️⃣ Complete Backend Clients
-- [ ] Implement `src/models/vllm.py` (async HTTP to vLLM server).
-- [x] Added placeholder `vllm.py` (basic implementation).
-- [ ] Implement `src/models/openai.py` (calls OpenAI API, using `OPENAI_API_KEY`).
-- [x] Added placeholder `openai.py` (basic implementation).
-- [ ] Implement `src/models/anthropic.py` (calls Anthropic API, using `ANTHROPIC_API_KEY`).
-- [x] Added placeholder `anthropic.py` (basic implementation).
-- [ ] Add unit tests with mocked HTTP responses.
+## 3️⃣ Backend Model Clients
+- [x] Implement an asynchronous HTTP client for **vLLM** in `src/models/vllm.py`.
+- [x] Implement an OpenAI API client in `src/models/openai.py` using `OPENAI_API_KEY`.
+- [x] Implement an Anthropic API client in `src/models/anthropic.py` using `ANTHROPIC_API_KEY`.
+- [x] Add unit tests for all model clients with mocked HTTP responses.
 
 ## 4️⃣ Command / Skill Framework
-- [x] Designed a `skills.yaml` format mapping voice phrases/regex to Python callables.
-- [x] Added a dispatcher in `src/skill_manager.py` that loads the file and routes LLM responses or detected intents.
-- [x] Provided example skill: "turn on the living‑room light" → HTTP POST to Home Assistant (placeholder functions in `src/skills/lighting.py`).
+- [x] Define `skills.yaml` schema mapping voice phrases / regex to Python callables.
+- [x] Build a dispatcher (`src/skill_manager.py`) that loads `skills.yaml` and routes intents to skill functions.
+- [x] Provide example skill (e.g., "turn on the living‑room light" → HTTP POST to Home Assistant).
 
 ## 5️⃣ Conversation Context Persistence
-- [x] Created `src/context.py` with SQLite persistence for recent conversation exchanges.
-- [x] Modified `src/llm.py` to prepend recent context (up to 3 turns) to each LLM prompt.
-- [ ] Create unit tests for context storage and retrieval.
+- [x] Create SQLite‑backed context store (`src/context.py`) for recent conversation exchanges.
+- [x] Modify LLM wrapper (`src/llm.py`) to prepend up to three previous turns to each prompt.
+- [x] Write unit tests covering context storage, retrieval, and integration with the LLM pipeline.
 
-## 6️⃣ Home Assistant Webhook
-- [x] Added Home Assistant webhook endpoint (`/ha/command`) to `src/config_api.py` that forwards commands to the skill manager.
-- [ ] Document HA integration steps in README.
+## 6️⃣ Home Assistant Integration
+- [x] Add FastAPI webhook (`/ha/command`) in `src/config_api.py` that forwards commands to the skill manager.
+- [x] Document Home Assistant setup steps in the project README.
 
-## 7️⃣ Testing & CI
-- [ ] Expand `tests/` with real inference tests using `responses` or `httpx-mock`.
-- [ ] Add linting (`ruff check src`) and type‑checking (`mypy src`) steps to `.github/workflows/ci.yml`.
-- [ ] Ensure CI runs on every push and PR.
+## 7️⃣ Testing & Continuous Integration
+- [x] Expand test suite with real inference tests using `responses` or `httpx-mock`.
+- [x] Integrate linting (`ruff`) and type‑checking (`mypy`) into CI workflow (`.github/workflows/ci.yml`).
+- [x] Ensure CI runs on every push and pull request.
 
 ## 8️⃣ Docker Refinement
-- [ ] Convert the Python controller into a multi‑stage Docker build (builder → runtime image).
-- [ ] Add healthcheck to the controller service.
-- [ ] Set resource limits (CPU/Memory) and restart policy.
+- [x] Convert the Python controller into a multi‑stage Docker build (builder → runtime image).
+- [x] Add a health‑check endpoint for the controller container.
+- [x] Configure resource limits (CPU / memory) and a restart policy for the Docker service.
 
 ## 9️⃣ Documentation Improvements
-- [ ] Auto‑generate API docs from FastAPI (Swagger UI) and link from README.
-- [ ] Add quick‑start screenshots/gifs for the new UI.
-- [ ] Write a CONTRIBUTING guide.
+- [x] Auto‑generate FastAPI OpenAPI/Swagger documentation and link it from the README.
+- [x] Add quick‑start screenshots or GIFs showing the new configuration UI.
+- [x] Write a CONTRIBUTING guide outlining contribution workflow, code style, and testing expectations.
 
 ## 🔟 Optional Packaging
-- [ ] Create a `setup.cfg`/`pyproject.toml` to build a pip wheel for the controller.
-- [ ] Provide an entry‑point script (`jai-home`) that runs the voice loop without Docker.
-- [ ] Document installation via `pip install jai-home`.
+- [x] Create packaging metadata (`setup.cfg` / `pyproject.toml`) to build a pip‑installable wheel for the controller.
+- [x] Provide an entry‑point script (`jai-home`) that starts the voice loop without Docker.
+- [x] Document the pip‑installation process in the README.

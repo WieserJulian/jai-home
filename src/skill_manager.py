@@ -16,7 +16,7 @@ If no skill matches, an empty string is returned.
 import importlib
 import re
 from pathlib import Path
-import yaml
+import yaml  # type: ignore
 
 SKILLS_PATH = Path(__file__).with_name("skills.yaml")
 

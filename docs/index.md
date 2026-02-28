@@ -1,4 +1,5 @@
 # Documentation for JAI Home Voice Assistant
+[Home](/docs/index.md) | [Installation](/docs/installation.md) | [Configuration UI](/docs/config_ui.md) | [ASR & TTS](/docs/asr_tts.md) | [Developer](/docs/developer.md) | [Skills](/docs/skills.md)
 
 Welcome to the **JAI Home** project! This site provides an overview of the
 architecture, installation instructions, usage guide, and developer reference.

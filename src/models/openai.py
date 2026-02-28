@@ -6,7 +6,7 @@ RuntimeError is raised.
 """
 
 import os
-import httpx
+import httpx  # type: ignore
 from . import BaseLLM
 
 class OpenAIClient(BaseLLM):
